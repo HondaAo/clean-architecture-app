@@ -9,12 +9,17 @@ type UserUsecase struct {
 	UserInteractor repository.UserRepository
 }
 
-func (userInteractor *UserUsecase) GetUser(id int) (user entity.User, err error) {
-	user, err = userInteractor.UserInteractor.GetUser(id)
+func (userInt *UserUsecase) GetUser(id int) (user entity.User, err error) {
+	user, err = userInt.UserInteractor.GetUser(id)
 	return
 }
 
-func (userInteractor *UserUsecase) GetUsers() (users []entity.User, err error) {
-	users, err = userInteractor.UserInteractor.GetUsers()
+func (userInt *UserUsecase) GetUsers() (users []entity.User, err error) {
+	users, err = userInt.UserInteractor.GetUsers()
+	return
+}
+
+func (userInt *UserUsecase) CreateUser(user entity.User) (err error) {
+	err = userInt.CreateUser(user)
 	return
 }

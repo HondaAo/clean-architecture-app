@@ -4,6 +4,7 @@ import (
 	"strconv"
 
 	"github.com/HondaAo/go_blog_app/adapters/gateways"
+	"github.com/HondaAo/go_blog_app/domain/entity"
 	"github.com/HondaAo/go_blog_app/usecase"
 	"github.com/labstack/echo/v4"
 )
@@ -39,5 +40,15 @@ func (controller *UserController) Index(c echo.Context) (err error) {
 		return
 	}
 	c.JSON(200, guests)
+	return
+}
+
+func (controller *UserController) Create(c echo.Context) (err error) {
+	user := new(entity.User)
+	if err := c.Bind(user); err != nil {
+		return err
+	}
+	err = controller.userController.CreateUser(*user)
+
 	return
 }
