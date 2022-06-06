@@ -48,7 +48,11 @@ func (controller *UserController) Create(c echo.Context) (err error) {
 	if err := c.Bind(user); err != nil {
 		return err
 	}
-	err = controller.userController.CreateUser(*user)
+	input := entity.User{
+		Username: user.Username,
+		Email:    user.Email,
+	}
+	err = controller.userController.CreateUser(input)
 
 	return
 }
