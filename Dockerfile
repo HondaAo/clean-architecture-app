@@ -9,12 +9,9 @@ COPY ./go.mod /app
 COPY ./go.sum /app
 RUN go mod tidy
 
-COPY . /app
+COPY ./ /app
 
-RUN go install github.com/cosmtrek/air@latest
-RUN go install honnef.co/go/tools/cmd/staticcheck@latest
+# binary will be $(go env GOPATH)/bin/air
+RUN curl -sSfL https://raw.githubusercontent.com/cosmtrek/air/master/install.sh | sh -s -- -b $(go env GOPATH)/bin
 
-COPY ./start.sh /app/start.sh
-RUN chmod +x /app/start.sh
-
-CMD ["air","-c", ".air.toml"]
+CMD ["air"]

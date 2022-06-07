@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"log"
 	"strconv"
 
 	"github.com/HondaAo/go_blog_app/adapters/gateways"
@@ -23,6 +24,7 @@ func NewUserController(sqlHandler gateways.SQLHandler) *UserController {
 	}
 }
 func (controller *UserController) Show(c echo.Context) (err error) {
+	log.Print(c)
 	id, _ := strconv.Atoi(c.Param("id"))
 	guest, err := controller.userController.GetUser(id)
 	if err != nil {

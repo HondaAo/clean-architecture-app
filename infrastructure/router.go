@@ -11,6 +11,6 @@ func UserRoute(*echo.Echo) {
 
 	userController := controller.NewUserController(db.NewSqlHandler())
 
-	e.GET("/users/:id", userController.Index)
-	e.GET("/users", userController.Show)
+	e.GET("/users/:id", userController.Show)
+	e.GET("/users", userController.Index)
 }

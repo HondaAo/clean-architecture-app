@@ -2,11 +2,14 @@ package db
 
 import (
 	"fmt"
+	"log"
 	"os"
+	"time"
 
 	"github.com/HondaAo/go_blog_app/adapters/gateways"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 type SQLHandler struct {
@@ -14,11 +17,23 @@ type SQLHandler struct {
 }
 
 func NewSqlHandler() gateways.SQLHandler {
-	user := os.Getenv("DB_USER")
-	pass := os.Getenv("DB_PASSWORD")
-	dbName := os.Getenv("DB_NAME")
-	dsn := fmt.Sprintf("%s:%s@tcp(localhost:3306)/%s", user, pass, dbName)
-	db, err := gorm.Open(mysql.Open(dsn))
+	// user := os.Getenv("DB_USER")
+	// pass := os.Getenv("DB_PASSWORD")
+	// dbName := os.Getenv("DB_NAME")
+	// containerName := os.Getenv("DB_CONTAINER")
+	newLogger := logger.New(
+		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
+		logger.Config{
+			SlowThreshold:             time.Second, // Slow SQL threshold
+			LogLevel:                  logger.Info, // Log level
+			IgnoreRecordNotFoundError: true,        // Ignore ErrRecordNotFound error for logger
+			Colorful:                  false,       // Disable color
+		},
+	)
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:3306)/development", "root", "root", "172.21.0.2")
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
+		Logger: newLogger,
+	})
 	if err != nil {
 		panic(err.Error)
 	}

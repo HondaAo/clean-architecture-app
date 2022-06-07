@@ -1,0 +1,15 @@
+CREATE DATABASE IF NOT EXISTS development;
+USE development;
+
+CREATE TABLE IF NOT EXISTS users 
+(
+    `id`         int(11) NOT NULL AUTO_INCREMENT,
+    `username`   varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+    `email`      varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+    `bio`        varchar(255) DEFAULT NULL,
+    PRIMARY KEY (`id`)
+);
+
+LOCK TABLES `users` WRITE;
+INSERT INTO users VALUES (1, 'ao', 'test@test.com', 'test user');
+UNLOCK TABLES;
