@@ -30,7 +30,7 @@ func NewSqlHandler() gateways.SQLHandler {
 			Colorful:                  false,       // Disable color
 		},
 	)
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:3306)/development", "root", "root", "172.21.0.2")
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:3306)/development", "root", "root", "db")
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
 		Logger: newLogger,
 	})

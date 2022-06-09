@@ -6,11 +6,10 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func UserRoute(*echo.Echo) {
-	e := echo.New()
-
+func UserRoute(e *echo.Echo) {
 	userController := controller.NewUserController(db.NewSqlHandler())
 
-	e.GET("/users/:id", userController.Show)
-	e.GET("/users", userController.Index)
+	e.GET("/users/:id", userController.Index)
+	e.GET("/users", userController.Show)
+	e.POST("/user_create", userController.Create)
 }

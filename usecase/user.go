@@ -20,6 +20,6 @@ func (userInt *UserUsecase) GetUsers() (users []entity.User, err error) {
 }
 
 func (userInt *UserUsecase) CreateUser(user entity.User) (err error) {
-	err = userInt.CreateUser(user)
+	err = userInt.UserInteractor.CreateUser(user)
 	return
 }

@@ -23,38 +23,39 @@ func NewUserController(sqlHandler gateways.SQLHandler) *UserController {
 		},
 	}
 }
-func (controller *UserController) Show(c echo.Context) (err error) {
+func (controller *UserController) Index(c echo.Context) (err error) {
 	log.Print(c)
 	id, _ := strconv.Atoi(c.Param("id"))
-	guest, err := controller.userController.GetUser(id)
+	user, err := controller.userController.GetUser(id)
 	if err != nil {
 		c.JSON(500, err)
 		return
 	}
-	c.JSON(200, guest)
+	c.JSON(200, user)
 	return
 }
 
-func (controller *UserController) Index(c echo.Context) (err error) {
-	guests, err := controller.userController.GetUsers()
+func (controller *UserController) Show(c echo.Context) (err error) {
+	users, err := controller.userController.GetUsers()
 	if err != nil {
 		c.JSON(500, err)
 		return
 	}
-	c.JSON(200, guests)
+	c.JSON(200, users)
 	return
 }
 
 func (controller *UserController) Create(c echo.Context) (err error) {
-	user := new(entity.User)
-	if err := c.Bind(user); err != nil {
+	user := entity.User{}
+	if err := c.Bind(&user); err != nil {
+		log.Print(err)
 		return err
 	}
-	input := entity.User{
-		Username: user.Username,
-		Email:    user.Email,
+	log.Print(user)
+	err = controller.userController.CreateUser(user)
+	if err != nil {
+		return c.JSON(500, err)
 	}
-	err = controller.userController.CreateUser(input)
 
-	return
+	return c.JSON(200, nil)
 }
