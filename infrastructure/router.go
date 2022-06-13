@@ -12,4 +12,5 @@ func UserRoute(e *echo.Echo) {
 	e.GET("/users/:id", userController.Index)
 	e.GET("/users", userController.Show)
 	e.POST("/user_create", userController.Create)
+	e.POST("/signup", userController.SignUp)
 }

@@ -1,6 +1,8 @@
 package gateways
 
-import "github.com/HondaAo/go_blog_app/domain/entity"
+import (
+	"github.com/HondaAo/go_blog_app/domain/entity"
+)
 
 type UserRepository struct {
 	SQLHandler
