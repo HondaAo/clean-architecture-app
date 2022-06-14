@@ -14,8 +14,13 @@ type UserController struct {
 	userController usecase.UserUsecase
 }
 
-type AuthInput struct {
+type SignupInput struct {
 	Username string `json:"username"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
+type SigninInput struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
 }
@@ -67,7 +72,7 @@ func (controller *UserController) Create(c echo.Context) (err error) {
 }
 
 func (controller *UserController) SignUp(c echo.Context) error {
-	input := new(AuthInput)
+	input := new(SignupInput)
 
 	if err := c.Bind(input); err != nil {
 		log.Print(err)
@@ -80,4 +85,20 @@ func (controller *UserController) SignUp(c echo.Context) error {
 	}
 
 	return c.JSON(200, nil)
+}
+
+func (controller *UserController) SignIn(c echo.Context) error {
+	input := new(SigninInput)
+
+	if err := c.Bind(input); err != nil {
+		log.Print(err)
+		return err
+	}
+
+	token, err := controller.userController.SignIn(c.Request().Context(), input.Email, input.Password)
+	if err != nil {
+		return err
+	}
+
+	return c.JSON(200, token)
 }

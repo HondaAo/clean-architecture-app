@@ -8,4 +8,5 @@ type UserRepository interface {
 	CreateUser(user entity.User) error
 	GetUser(id int) (entity.User, error)
 	GetUsers() ([]entity.User, error)
+	GetUserByEmail(email string) (entity.User, error)
 }
