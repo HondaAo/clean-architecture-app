@@ -16,7 +16,7 @@ func main() {
 
 	infrastructure.UserRoute(e)
 
-	e.Use(middleware.JWT([]byte("secret")))
+	// e.Use(middleware.JWT([]byte("secret")))
 	e.GET("/restricted", restricted)
 	e.Logger.Fatal(e.Start(":4000"))
 }

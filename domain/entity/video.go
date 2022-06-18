@@ -1,13 +1,13 @@
 package entity
 
 type Video struct {
-	Id       int
-	Title    string
-	Url      string
-	Script   string
-	View     int
-	Category string
-	Series   string
-	End      int
-	Level    string
+	Id       int    `json:"id"`
+	Title    string `json:"title"`
+	Url      string `json:"url"`
+	Script   string `json:"script"`
+	View     int    `json:"view"`
+	Category string `json:"category"`
+	Series   string `json:"series"`
+	End      int    `json:"end"`
+	Level    string `json:"level"`
 }

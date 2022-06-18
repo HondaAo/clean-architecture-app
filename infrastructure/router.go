@@ -8,10 +8,13 @@ import (
 
 func UserRoute(e *echo.Echo) {
 	userController := controller.NewUserController(db.NewSqlHandler())
+	videoController := controller.NewVideoController(db.NewSqlHandler())
 
 	e.GET("/api/users/:id", userController.Index)
 	e.GET("/api/users", userController.Show)
 	e.POST("/api/user_create", userController.Create)
-	e.POST("/api/signup", userController.SignUp)
-	e.POST("/api/signin", userController.SignIn)
+	e.GET("/api/videos", videoController.Show)
+	e.GET("/api/videos/:id", videoController.Index)
+	// e.POST("/api/signup", userController.SignUp)
+	// e.POST("/api/signin", userController.SignIn)
 }

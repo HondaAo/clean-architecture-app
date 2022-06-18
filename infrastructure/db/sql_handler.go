@@ -1,13 +1,12 @@
 package db
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"time"
 
 	"github.com/HondaAo/go_blog_app/adapters/gateways"
-	"gorm.io/driver/mysql"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )
@@ -17,10 +16,6 @@ type SQLHandler struct {
 }
 
 func NewSqlHandler() gateways.SQLHandler {
-	// user := os.Getenv("DB_USER")
-	// pass := os.Getenv("DB_PASSWORD")
-	// dbName := os.Getenv("DB_NAME")
-	// containerName := os.Getenv("DB_CONTAINER")
 	newLogger := logger.New(
 		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
 		logger.Config{
@@ -30,8 +25,8 @@ func NewSqlHandler() gateways.SQLHandler {
 			Colorful:                  false,       // Disable color
 		},
 	)
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:3306)/development", "root", "root", "db")
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
+	dsn := "host=db user=postgres password=root dbname=development port=5432 sslmode=disable TimeZone=Asia/Tokyo"
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
 		Logger: newLogger,
 	})
 	if err != nil {
