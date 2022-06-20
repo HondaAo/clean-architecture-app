@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"log"
 	"strconv"
 
 	"github.com/HondaAo/go_blog_app/adapters/gateways"
@@ -25,14 +24,13 @@ func NewVideoController(sqlHandler gateways.SQLHandler) *VideoController {
 }
 
 func (controller *VideoController) Index(c echo.Context) (err error) {
-	log.Print(c)
 	id, _ := strconv.Atoi(c.Param("id"))
-	user, err := controller.videoController.GetVideoById(id)
+	video, err := controller.videoController.GetVideoById(id)
 	if err != nil {
 		echo.NewHTTPError(500, "failed to get video")
 		return
 	}
-	c.JSON(200, user)
+	c.JSON(200, video)
 	return
 }
 
@@ -59,4 +57,28 @@ func (controller *VideoController) Create(c echo.Context) (err error) {
 	}
 
 	return c.JSON(200, nil)
+}
+
+func (controller *VideoController) Watch(c echo.Context) (err error) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	video, err := controller.videoController.GetVideoById(id)
+	if err != nil {
+		echo.NewHTTPError(500, "failed to get video")
+		return
+	}
+	video.View += 1
+	if err = controller.videoController.UpdateVideo(video); err != nil {
+		return
+	}
+	return c.JSON(200, nil)
+}
+
+func (controller *VideoController) Search(c echo.Context) (err error) {
+	category := c.Param("category")
+	videos, err := controller.videoController.SearchVideo(category)
+	if err != nil {
+		echo.NewHTTPError(500, "failed to get video")
+		return
+	}
+	return c.JSON(200, videos)
 }

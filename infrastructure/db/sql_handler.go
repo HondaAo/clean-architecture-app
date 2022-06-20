@@ -44,3 +44,7 @@ func (handler *SQLHandler) Find(out interface{}, where ...interface{}) *gorm.DB 
 func (handler *SQLHandler) Create(out interface{}) *gorm.DB {
 	return handler.db.Create(out)
 }
+
+func (handler *SQLHandler) Updates(out interface{}) *gorm.DB {
+	return handler.db.Updates(out)
+}

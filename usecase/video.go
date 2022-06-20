@@ -23,3 +23,13 @@ func (repo *VideoUsecase) RegisterVideo(video entity.Video) (err error) {
 	err = repo.VideoInteractor.CreateVideo(video)
 	return
 }
+
+func (repo *VideoUsecase) UpdateVideo(video entity.Video) (err error) {
+	err = repo.VideoInteractor.UpdateVideo(video)
+	return
+}
+
+func (repo *VideoUsecase) SearchVideo(category string) (videos []entity.Video, err error) {
+	videos, err = repo.VideoInteractor.SearchVideo(category)
+	return
+}

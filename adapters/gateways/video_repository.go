@@ -26,3 +26,17 @@ func (repo *VideoRepository) CreateVideo(video entity.Video) (err error) {
 	}
 	return
 }
+
+func (repo *VideoRepository) UpdateVideo(video entity.Video) (err error) {
+	if err = repo.Updates(video).Error; err != nil {
+		return
+	}
+	return
+}
+
+func (repo *VideoRepository) SearchVideo(category string) (videos []entity.Video, err error) {
+	if err = repo.Find(&videos, category).Error; err != nil {
+		return
+	}
+	return
+}
