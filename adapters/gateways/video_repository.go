@@ -40,3 +40,10 @@ func (repo *VideoRepository) SearchVideo(category string) (videos []entity.Video
 	}
 	return
 }
+
+func (repo *VideoRepository) GetVideosByIds(ids []int) (videos []entity.Video, err error) {
+	if err = repo.Find(&videos, ids).Error; err != nil {
+		return
+	}
+	return
+}

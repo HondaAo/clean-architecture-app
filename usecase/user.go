@@ -49,8 +49,6 @@ func (repo *UserUsecase) SignUp(c context.Context, username string, email string
 	user := entity.User{
 		Username: username,
 		Email:    email,
-		Password: fmt.Sprintf("%x", pwd.Sum(nil)),
-		Bio:      "",
 	}
 
 	err = repo.UserInteractor.CreateUser(user)

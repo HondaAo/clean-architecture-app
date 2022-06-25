@@ -7,10 +7,17 @@ import (
 
 type VideoUsecase struct {
 	VideoInteractor repository.VideoRepository
+	LikeInteractor  repository.LikeRepository
 }
 
 func (repo *VideoUsecase) GetVideoById(id int) (video entity.Video, err error) {
 	video, err = repo.VideoInteractor.GetVideo(id)
+	return
+}
+
+func (repo *VideoUsecase) GetVideosByLikeIds(id int) (videos []entity.Video, err error) {
+	ids, err := repo.LikeInteractor.GetLikes(id)
+	videos, err = repo.VideoInteractor.GetVideosByIds(ids)
 	return
 }
 

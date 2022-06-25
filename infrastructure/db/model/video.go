@@ -1,4 +1,4 @@
-package entity
+package model
 
 type Video struct {
 	Id        int    `json:"id" gorm:"autoIncrement"`

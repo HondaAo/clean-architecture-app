@@ -1,9 +1,9 @@
 package entity
 
 type User struct {
-	// Id       int    `json:"id"`
-	Username string `json:"username"`
-	Email    string `json:"email"`
-	Password string `json:"password"`
-	Bio      string `json:"bio"`
+	Id        int    `json:"id" gorm:"autoIncrement"`
+	Username  string `json:"username"`
+	Email     string `json:"email"`
+	Icon      string `json:"icon"`
+	UpdatedAt string `json:"updated_at"`
 }

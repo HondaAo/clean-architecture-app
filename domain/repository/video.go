@@ -8,4 +8,5 @@ type VideoRepository interface {
 	CreateVideo(video entity.Video) (err error)
 	UpdateVideo(video entity.Video) (err error)
 	SearchVideo(category string) (videos []entity.Video, err error)
+	GetVideosByIds(ids []int) (videos []entity.Video, err error)
 }

@@ -50,7 +50,7 @@ func (controller *VideoController) Create(c echo.Context) (err error) {
 		return echo.NewHTTPError(400, err.Error())
 	}
 	//仮置き
-	video.Id = 1
+	// video.Id = 1
 	err = controller.videoController.RegisterVideo(video)
 	if err != nil {
 		return echo.NewHTTPError(500, "failed to create &video")
@@ -73,9 +73,37 @@ func (controller *VideoController) Watch(c echo.Context) (err error) {
 	return c.JSON(200, nil)
 }
 
+func (controller *VideoController) Update(c echo.Context) (err error) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	video, err := controller.videoController.GetVideoById(id)
+	if err != nil {
+		echo.NewHTTPError(500, "failed to get video")
+		return
+	}
+	updatedVideo := entity.Video{}
+	if err := c.Bind(&updatedVideo); err != nil {
+		return echo.NewHTTPError(400, err.Error())
+	}
+	video = updatedVideo
+	if err = controller.videoController.UpdateVideo(video); err != nil {
+		return
+	}
+	return c.JSON(200, nil)
+}
+
 func (controller *VideoController) Search(c echo.Context) (err error) {
 	category := c.Param("category")
 	videos, err := controller.videoController.SearchVideo(category)
+	if err != nil {
+		echo.NewHTTPError(500, "failed to get video")
+		return
+	}
+	return c.JSON(200, videos)
+}
+
+func (controller *VideoController) Like(c echo.Context) (err error) {
+	user_id, err := strconv.Atoi(c.Param("user_id"))
+	videos, err := controller.videoController.GetVideosByLikeIds(user_id)
 	if err != nil {
 		echo.NewHTTPError(500, "failed to get video")
 		return

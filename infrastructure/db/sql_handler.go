@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/HondaAo/go_blog_app/adapters/gateways"
+	"github.com/HondaAo/go_blog_app/domain/entity"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -32,6 +33,7 @@ func NewSqlHandler() gateways.SQLHandler {
 	if err != nil {
 		panic(err.Error)
 	}
+	db.AutoMigrate(&entity.Video{}, &entity.Like{}, &entity.User{})
 	sqlHandler := new(SQLHandler)
 	sqlHandler.db = db
 	return sqlHandler
@@ -47,4 +49,8 @@ func (handler *SQLHandler) Create(out interface{}) *gorm.DB {
 
 func (handler *SQLHandler) Updates(out interface{}) *gorm.DB {
 	return handler.db.Updates(out)
+}
+
+func (handler *SQLHandler) Delete(out interface{}) *gorm.DB {
+	return handler.db.Delete(out)
 }
