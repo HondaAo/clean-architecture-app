@@ -6,10 +6,10 @@ services:
       context: .
       dockerfile: ./Dockerfile
     environment:
-      DB_USER: "postgres"
-      DB_PASSWORD: "root"
-      DB_CONTAINER_NAME: "db"
-      DB_PORT: "5432"
+      MYSQL_HOST: db 
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_DB: videos-app
     ports:
       - 4000:4000
     stdin_open: true
@@ -20,16 +20,19 @@ services:
       - db
   db:
     container_name: db
-    image: postgres:14
+    image: mysql:5.7
     environment:
-      POSTGRES_PASSWORD: "root"
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_DATABASE: videos-app
       TZ: Asia/Tokyo
     ports: 
-      - 5432:5432
+      - 3306:3306
     volumes:
-      - ./db/my.cnf:/etc/postgresql/conf.d/my.cnf
-      - ./db:/docker-entrypoint-initdb.d
-      - ./db/dbdata:/var/lib/postgresql
+       - mysql-data:/var/lib/mysql
+  # redis:
+  #   container_name: redis
+  #   image: redis:latest
+  #   ports:
+  #     - 6379:6379
 volumes:
-  mysql_volume:
-    driver: local
+  mysql-data:

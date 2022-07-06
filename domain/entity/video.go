@@ -9,6 +9,7 @@ type Video struct {
 	Category  string `json:"category"`
 	Series    string `json:"series"`
 	EndTime   int    `json:"end_time"`
+	Start     int    `json:"start" gorm:"default:0"`
 	Level     string `json:"level"`
 	CreatedAt string `json:"created_at"`
 }

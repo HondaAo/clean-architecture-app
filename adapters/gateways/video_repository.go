@@ -27,15 +27,22 @@ func (repo *VideoRepository) CreateVideo(video entity.Video) (err error) {
 	return
 }
 
-func (repo *VideoRepository) UpdateVideo(video entity.Video) (err error) {
-	if err = repo.Updates(video).Error; err != nil {
+func (repo *VideoRepository) UpdateVideo(video entity.Video, id int) (err error) {
+	if err = repo.Updates(video, id).Error; err != nil {
 		return
 	}
 	return
 }
 
-func (repo *VideoRepository) SearchVideo(category string) (videos []entity.Video, err error) {
-	if err = repo.Find(&videos, category).Error; err != nil {
+func (repo *VideoRepository) SearchVideoByCategory(category string) (videos []entity.Video, err error) {
+	if err = repo.WhereCategory(&videos, category).Error; err != nil {
+		return
+	}
+	return
+}
+
+func (repo *VideoRepository) SearchVideoBySeries(series string) (videos []entity.Video, err error) {
+	if err = repo.WhereSeries(&videos, series).Error; err != nil {
 		return
 	}
 	return

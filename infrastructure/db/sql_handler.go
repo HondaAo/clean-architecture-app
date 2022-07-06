@@ -7,7 +7,7 @@ import (
 
 	"github.com/HondaAo/go_blog_app/adapters/gateways"
 	"github.com/HondaAo/go_blog_app/domain/entity"
-	"gorm.io/driver/postgres"
+	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )
@@ -26,8 +26,8 @@ func NewSqlHandler() gateways.SQLHandler {
 			Colorful:                  false,       // Disable color
 		},
 	)
-	dsn := "host=db user=postgres password=root dbname=development port=5432 sslmode=disable TimeZone=Asia/Tokyo"
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
+	dsn := "root:root@tcp(db:3306)/videos-app?charset=utf8mb4&parseTime=True&loc=Local"
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
 		Logger: newLogger,
 	})
 	if err != nil {
@@ -47,10 +47,22 @@ func (handler *SQLHandler) Create(out interface{}) *gorm.DB {
 	return handler.db.Create(out)
 }
 
-func (handler *SQLHandler) Updates(out interface{}) *gorm.DB {
-	return handler.db.Updates(out)
+func (handler *SQLHandler) Updates(out interface{}, where ...interface{}) *gorm.DB {
+	return handler.db.Where(where).Updates(out)
 }
 
 func (handler *SQLHandler) Delete(out interface{}) *gorm.DB {
 	return handler.db.Delete(out)
+}
+
+func (handler *SQLHandler) WhereCategory(out interface{}, where ...interface{}) *gorm.DB {
+	return handler.db.Where("category = ?", where...).Find(out)
+}
+
+func (handler *SQLHandler) WhereSeries(out interface{}, where ...interface{}) *gorm.DB {
+	return handler.db.Where("series = ?", where...).Find(out)
+}
+
+func (handler *SQLHandler) WhereUserId(out interface{}, where ...interface{}) *gorm.DB {
+	return handler.db.Where("user_id = ?", where).Find(out)
 }

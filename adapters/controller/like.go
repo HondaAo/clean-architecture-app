@@ -1,16 +1,23 @@
 package controller
 
 import (
+	"log"
 	"strconv"
 
 	"github.com/HondaAo/go_blog_app/adapters/gateways"
 	"github.com/HondaAo/go_blog_app/domain/entity"
 	"github.com/HondaAo/go_blog_app/usecase"
+	"github.com/HondaAo/go_blog_app/utils"
 	"github.com/labstack/echo/v4"
 )
 
 type LikeController struct {
 	likeController usecase.LikeUseCase
+}
+
+type Response struct {
+	Username string `json:"user_name"`
+	VideoId  int    `json:"video_id"`
 }
 
 func NewLikeController(sqlHandler gateways.SQLHandler) *LikeController {
@@ -30,16 +37,23 @@ func (controller *LikeController) Index(c echo.Context) (err error) {
 		echo.NewHTTPError(500, "failed to get video")
 		return
 	}
-	c.JSON(200, likes)
-	return
+	return c.JSON(200, likes)
+
 }
 
 func (controller *LikeController) Create(c echo.Context) (err error) {
-	like := entity.Like{}
+	like := Response{}
 	if err := c.Bind(&like); err != nil {
 		return echo.NewHTTPError(400, err.Error())
 	}
-	err = controller.likeController.LikeVideo(like)
+	log.Print(like)
+	id, _ := utils.GetSession(c, like.Username)
+	intId, _ := strconv.Atoi(id)
+	newLike := entity.Like{
+		UserId:  intId,
+		VideoId: like.VideoId,
+	}
+	err = controller.likeController.LikeVideo(newLike)
 	if err != nil {
 		return echo.NewHTTPError(500, "failed to create &video")
 	}

@@ -67,7 +67,7 @@ func (controller *VideoController) Watch(c echo.Context) (err error) {
 		return
 	}
 	video.View += 1
-	if err = controller.videoController.UpdateVideo(video); err != nil {
+	if err = controller.videoController.UpdateVideo(video, id); err != nil {
 		return
 	}
 	return c.JSON(200, nil)
@@ -85,7 +85,7 @@ func (controller *VideoController) Update(c echo.Context) (err error) {
 		return echo.NewHTTPError(400, err.Error())
 	}
 	video = updatedVideo
-	if err = controller.videoController.UpdateVideo(video); err != nil {
+	if err = controller.videoController.UpdateVideo(video, id); err != nil {
 		return
 	}
 	return c.JSON(200, nil)
@@ -93,7 +93,17 @@ func (controller *VideoController) Update(c echo.Context) (err error) {
 
 func (controller *VideoController) Search(c echo.Context) (err error) {
 	category := c.Param("category")
-	videos, err := controller.videoController.SearchVideo(category)
+	videos, err := controller.videoController.SearchVideoByCategory(category)
+	if err != nil {
+		echo.NewHTTPError(500, "failed to get video")
+		return
+	}
+	return c.JSON(200, videos)
+}
+
+func (controller *VideoController) Series(c echo.Context) (err error) {
+	series := c.Param("series")
+	videos, err := controller.videoController.SearchVideoBySeries(series)
 	if err != nil {
 		echo.NewHTTPError(500, "failed to get video")
 		return
